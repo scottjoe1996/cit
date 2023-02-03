@@ -1,5 +1,6 @@
 import React from 'react';
-import validator from 'email-validator';
+import emailValidator from 'email-validator';
+import passwordValidator from 'password-validator';
 
 import { Card, CardContent, CardHeader, TextField } from '@mui/material';
 
@@ -16,7 +17,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
   }, []);
 
   const handlePasswordChange = React.useCallback((event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setPassword({ value: event.currentTarget.value, error: NO_ERROR });
+    setPassword({ value: event.currentTarget.value, error: getPasswordError(event.currentTarget.value) });
   }, []);
 
   return (
@@ -47,6 +48,18 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
   );
 };
 
-const getEmailError = (email: string) => (validator.validate(email) ? NO_ERROR : 'Invalid email address');
+const getEmailError = (email: string) => (emailValidator.validate(email) ? NO_ERROR : 'Invalid email address');
+
+const schema = new passwordValidator();
+schema.is().min(6).has().uppercase(1).has().lowercase(1).has().digits(1).has().not().spaces();
+
+const getPasswordError = (password: string) => {
+  const validationResult = schema.validate(password, { details: true });
+
+  // Will always be an array
+  if (validationResult instanceof Array) {
+    return validationResult.length === 0 ? NO_ERROR : validationResult[0].message;
+  }
+};
 
 export default LoginForm;
