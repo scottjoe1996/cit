@@ -13,6 +13,9 @@ export class CognitoAuthenticationApi implements AuthenticationApi {
       user.authenticateUser(authDetails, {
         onSuccess: () => {
           resolve({ success: true });
+        },
+        onFailure: (err: Error) => {
+          reject({ success: false, reason: err.message });
         }
       });
     });

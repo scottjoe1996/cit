@@ -24,9 +24,9 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({ submitLogin }) => 
     setPasswordField({ value: event.currentTarget.value, error: getPasswordError(event.currentTarget.value) });
   }, []);
 
-  const handleSubmit = React.useCallback(() => {
+  const handleSubmit = React.useCallback((email: string, password: string) => {
     setLoading(true);
-    void submitLogin(emailField.value, passwordField.value);
+    void submitLogin(email, password);
   }, []);
 
   const emailHasError = hasError(emailField.error);
@@ -60,7 +60,13 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({ submitLogin }) => 
         />
       </CardContent>
       <CardActions sx={{ padding: 2 }}>
-        <LoadingButton sx={{ marginLeft: 'auto' }} loading={loading} onClick={handleSubmit} disabled={cantContinue} variant='contained'>
+        <LoadingButton
+          sx={{ marginLeft: 'auto' }}
+          loading={loading}
+          onClick={() => handleSubmit(emailField.value, passwordField.value)}
+          disabled={cantContinue}
+          variant='contained'
+        >
           Submit
         </LoadingButton>
       </CardActions>
