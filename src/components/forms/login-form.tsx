@@ -9,9 +9,14 @@ interface LoginFormProps {}
 
 const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
   const [emailField, setEmailField] = React.useState<Field>({ value: '', error: NO_ERROR });
+  const [password, setPassword] = React.useState<Field>({ value: '', error: NO_ERROR });
 
   const handleEmailChange = React.useCallback((event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEmailField({ value: event.currentTarget.value, error: getEmailError(event.currentTarget.value) });
+  }, []);
+
+  const handlePasswordChange = React.useCallback((event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setPassword({ value: event.currentTarget.value, error: NO_ERROR });
   }, []);
 
   return (
@@ -26,6 +31,16 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
           helperText={emailField.error}
           onChange={handleEmailChange}
           error={hasError(emailField.error)}
+        />
+        <TextField
+          fullWidth
+          label='Password'
+          placeholder='Password'
+          value={password.value}
+          helperText={password.error}
+          onChange={handlePasswordChange}
+          error={hasError(password.error)}
+          type='password'
         />
       </CardContent>
     </Card>
