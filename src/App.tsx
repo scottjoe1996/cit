@@ -5,7 +5,7 @@ export const App: React.FunctionComponent = () => {
   return (
     <div>
       <h1>Cit App</h1>
-      <LoginForm />
+      <LoginForm submitLogin={() => Promise.resolve()} />
     </div>
   );
 };

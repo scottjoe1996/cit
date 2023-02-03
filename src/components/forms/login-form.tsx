@@ -2,23 +2,36 @@ import React from 'react';
 import emailValidator from 'email-validator';
 import passwordValidator from 'password-validator';
 
-import { Card, CardContent, CardHeader, TextField } from '@mui/material';
+import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { Field, hasError, NO_ERROR } from './shared/field';
 
-interface LoginFormProps {}
+interface LoginFormProps {
+  submitLogin: (email: string, password: string) => Promise<void>;
+}
 
-const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
+const LoginForm: React.FunctionComponent<LoginFormProps> = ({ submitLogin }) => {
   const [emailField, setEmailField] = React.useState<Field>({ value: '', error: NO_ERROR });
-  const [password, setPassword] = React.useState<Field>({ value: '', error: NO_ERROR });
+  const [passwordField, setPasswordField] = React.useState<Field>({ value: '', error: NO_ERROR });
+  const [loading, setLoading] = React.useState(false);
 
   const handleEmailChange = React.useCallback((event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEmailField({ value: event.currentTarget.value, error: getEmailError(event.currentTarget.value) });
   }, []);
 
   const handlePasswordChange = React.useCallback((event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setPassword({ value: event.currentTarget.value, error: getPasswordError(event.currentTarget.value) });
+    setPasswordField({ value: event.currentTarget.value, error: getPasswordError(event.currentTarget.value) });
   }, []);
+
+  const handleSubmit = React.useCallback(() => {
+    setLoading(true);
+    void submitLogin(emailField.value, passwordField.value);
+  }, []);
+
+  const emailHasError = hasError(emailField.error);
+  const passwordHasError = hasError(passwordField.error);
+  const cantContinue = emailHasError || passwordHasError || emailField.value === '' || passwordField.value === '';
 
   return (
     <Card>
@@ -31,19 +44,26 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
           value={emailField.value}
           helperText={emailField.error}
           onChange={handleEmailChange}
-          error={hasError(emailField.error)}
+          error={emailHasError}
+          disabled={loading}
         />
         <TextField
           fullWidth
           label='Password'
           placeholder='Password'
-          value={password.value}
-          helperText={password.error}
+          value={passwordField.value}
+          helperText={passwordField.error}
           onChange={handlePasswordChange}
-          error={hasError(password.error)}
+          error={passwordHasError}
           type='password'
+          disabled={loading}
         />
       </CardContent>
+      <CardActions sx={{ padding: 2 }}>
+        <LoadingButton sx={{ marginLeft: 'auto' }} loading={loading} onClick={handleSubmit} disabled={cantContinue} variant='contained'>
+          Submit
+        </LoadingButton>
+      </CardActions>
     </Card>
   );
 };
