@@ -1,21 +1,21 @@
 import React from 'react';
-import { AuthenticationApi } from '../apis/authentication/authentication-api';
+import { AuthenticationApi, UserSession } from '../apis/authentication/authentication-api';
 import { CognitoAuthenticationApi } from '../apis/authentication/cognito-authentication-api';
 import { CONFIG } from '../config/config';
 
 interface AuthenticationContextInt {
   authenticationApi: AuthenticationApi;
-  userIsSignedIn: boolean;
-  setUserIsSignedIn: (newValue: boolean) => void;
+  userSession?: UserSession;
+  setUserSession: (userSession: UserSession) => void;
 }
 
 const AuthenticationContext = React.createContext<AuthenticationContextInt | undefined>(undefined);
 
 export const AuthenticationContextProvider: React.FunctionComponent<{ children: React.ReactElement }> = ({ children }) => {
-  const [userIsSignedIn, setUserIsSignedIn] = React.useState(false);
+  const [userSession, setUserSession] = React.useState<UserSession>();
   const authenticationApi = new CognitoAuthenticationApi(CONFIG.cognitoUserPool);
 
-  return <AuthenticationContext.Provider value={{ authenticationApi, userIsSignedIn, setUserIsSignedIn }}>{children}</AuthenticationContext.Provider>;
+  return <AuthenticationContext.Provider value={{ authenticationApi, userSession, setUserSession }}>{children}</AuthenticationContext.Provider>;
 };
 
 export const useAuthenticationContext = (): AuthenticationContextInt => {

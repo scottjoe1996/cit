@@ -11,11 +11,14 @@ export class CognitoAuthenticationApi implements AuthenticationApi {
 
     return new Promise((resolve, reject) => {
       user.authenticateUser(authDetails, {
-        onSuccess: () => {
-          resolve({ success: true });
+        onSuccess: (userSession) => {
+          resolve({ success: true, userSession });
         },
         onFailure: (err: Error) => {
           reject({ success: false, reason: err.message });
+        },
+        newPasswordRequired: () => {
+          reject({ success: false, reason: 'New password required, contact Joe' });
         }
       });
     });

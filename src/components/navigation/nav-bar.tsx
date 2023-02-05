@@ -10,7 +10,7 @@ export interface NavBarProps {
 }
 
 export const NavBar: React.FunctionComponent<NavBarProps> = ({ title }) => {
-  const { userIsSignedIn } = useAuthenticationContext();
+  const { userSession } = useAuthenticationContext();
 
   return (
     <AppBar position='sticky'>
@@ -18,7 +18,7 @@ export const NavBar: React.FunctionComponent<NavBarProps> = ({ title }) => {
         <Typography variant='h5' noWrap>
           {title}
         </Typography>
-        {userIsSignedIn && <AccountCircleIcon sx={{ marginLeft: 'auto' }} />}
+        {userSession?.isValid() && <AccountCircleIcon sx={{ marginLeft: 'auto' }} />}
       </Toolbar>
     </AppBar>
   );
