@@ -1,23 +1,20 @@
 import React from 'react';
-import LoginForm from './components/forms/login-form';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { useAuthenticationContext } from './context/authentication-context';
+import Layout from './components/layout/layout';
+import Dashboard from './pages/dashboard/dashboard';
+import NoPageFound from './pages/no-page-found/no-page-found';
 
 export const App: React.FunctionComponent = () => {
-  const { authenticationApi, setUserSession } = useAuthenticationContext();
-
-  const handleSubmit = React.useCallback(async (email: string, password: string) => {
-    const result = await authenticationApi.login(email, password);
-    if (result.success) {
-      setUserSession(result.userSession);
-    }
-  }, []);
-
   return (
-    <div>
-      <h1>Cit App</h1>
-      <LoginForm submitLogin={(email, password) => handleSubmit(email, password)} />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path='*' element={<NoPageFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 

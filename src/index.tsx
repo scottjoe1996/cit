@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { Container, CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import App from './app';
-import NavBar from './components/navigation/nav-bar';
 import { theme } from './theme';
 import { AuthenticationContextProvider } from './context/authentication-context';
 
@@ -13,10 +12,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <ThemeProvider theme={theme}>
       <AuthenticationContextProvider>
         <CssBaseline>
-          <NavBar title='Cit' />
-          <Container maxWidth='lg' sx={{ paddingTop: theme.spacing(3) }}>
-            <App />
-          </Container>
+          <App />
         </CssBaseline>
       </AuthenticationContextProvider>
     </ThemeProvider>
