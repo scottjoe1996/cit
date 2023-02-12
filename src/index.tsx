@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 import { Container, CssBaseline, ThemeProvider } from '@mui/material';
 
-import App from './App';
+import App from './app';
 import NavBar from './components/navigation/nav-bar';
 import { theme } from './theme';
 import { AuthenticationContextProvider } from './context/authentication-context';
