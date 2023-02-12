@@ -9,16 +9,28 @@ import { UserSession } from '../../apis/authentication/authentication-api';
 export interface NavBarProps {
   title: string;
   userSession?: UserSession;
+  onLogin: () => void;
+  onLogout: () => void;
 }
 
-export const NavBar: React.FunctionComponent<NavBarProps> = ({ title, userSession }) => {
+export const NavBar: React.FunctionComponent<NavBarProps> = ({ title, userSession, onLogin, onLogout }) => {
+  const buttonSpacing = { marginLeft: 'auto' };
+
   return (
     <AppBar position='sticky'>
       <Toolbar>
         <Typography variant='h5' noWrap>
           {title}
         </Typography>
-        <IconButton sx={{ marginLeft: 'auto' }}>{userSession ? <AccountCircleIcon /> : <LoginIcon />}</IconButton>
+        {userSession ? (
+          <IconButton sx={buttonSpacing} onClick={onLogout}>
+            <AccountCircleIcon />
+          </IconButton>
+        ) : (
+          <IconButton sx={buttonSpacing} onClick={onLogin}>
+            <LoginIcon />
+          </IconButton>
+        )}
       </Toolbar>
     </AppBar>
   );

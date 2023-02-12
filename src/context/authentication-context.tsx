@@ -6,7 +6,7 @@ import { CONFIG } from '../config/config';
 interface AuthenticationContextInt {
   authenticationApi: AuthenticationApi;
   userSession?: UserSession;
-  setUserSession: (userSession: UserSession) => void;
+  setUserSession: (userSession?: UserSession) => void;
 }
 
 const AuthenticationContext = React.createContext<AuthenticationContextInt | undefined>(undefined);
