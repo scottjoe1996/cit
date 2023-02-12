@@ -4,14 +4,14 @@ import { AppBar, Toolbar, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { useAuthenticationContext } from '../../context/authentication-context';
+import { UserSession } from '../../apis/authentication/authentication-api';
 
 export interface NavBarProps {
   title: string;
+  userSession?: UserSession;
 }
 
-export const NavBar: React.FunctionComponent<NavBarProps> = ({ title }) => {
-  const { userSession } = useAuthenticationContext();
-
+export const NavBar: React.FunctionComponent<NavBarProps> = ({ title, userSession }) => {
   return (
     <AppBar position='sticky'>
       <Toolbar>
