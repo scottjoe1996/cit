@@ -11,13 +11,9 @@ const Login: React.FunctionComponent = () => {
   const navigate = useNavigate();
 
   const onSubmitLogin = React.useCallback(async (email: string, password: string) => {
-    console.log(email);
-
     const authenticationResult = await authenticationApi.login(email, password);
-    console.log(authenticationResult);
 
     if (authenticationResult.success) {
-      console.log(authenticationResult);
       setUserSession(authenticationResult.userSession);
       navigate('/');
     } else {
