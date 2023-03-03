@@ -12,9 +12,9 @@ export const App: React.FunctionComponent = () => {
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Dashboard />} />
-          <Route path='login' element={<Login />} />
-          <Route path='*' element={<NoPageFound />} />
         </Route>
+        <Route path='/login' element={<Login />} />
+        <Route path='/*' element={<NoPageFound />} />
       </Routes>
     </BrowserRouter>
   );
