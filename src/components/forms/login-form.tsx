@@ -2,16 +2,21 @@ import React from 'react';
 import emailValidator from 'email-validator';
 import passwordValidator from 'password-validator';
 
-import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, TextField } from '@mui/material';
+import { Alert, Card, CardActions, CardContent, CardHeader, Grid, SxProps, TextField, Theme } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 import { Field, hasError, NO_ERROR } from './shared/field';
 
+const fieldWidth: SxProps<Theme> = (theme) => ({
+  width: theme.spacing(55)
+});
+
 interface LoginFormProps {
   submitLogin: (email: string, password: string) => Promise<void>;
+  error?: string;
 }
 
-const LoginForm: React.FunctionComponent<LoginFormProps> = ({ submitLogin }) => {
+const LoginForm: React.FunctionComponent<LoginFormProps> = ({ submitLogin, error }) => {
   const [emailField, setEmailField] = React.useState<Field>({ value: '', error: NO_ERROR });
   const [passwordField, setPasswordField] = React.useState<Field>({ value: '', error: NO_ERROR });
   const [loading, setLoading] = React.useState(false);
@@ -35,29 +40,41 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({ submitLogin }) => 
 
   return (
     <Card>
-      <CardHeader title='Login' />
+      <CardHeader
+        title='Login'
+        subheader={
+          error && (
+            <Alert sx={{ marginTop: 1 }} severity='error'>
+              {error}
+            </Alert>
+          )
+        }
+        sx={{ paddingTop: 1 }}
+      />
       <CardContent>
-        <TextField
-          fullWidth
-          label='Email'
-          placeholder='Email'
-          value={emailField.value}
-          helperText={emailField.error}
-          onChange={handleEmailChange}
-          error={emailHasError}
-          disabled={loading}
-        />
-        <TextField
-          fullWidth
-          label='Password'
-          placeholder='Password'
-          value={passwordField.value}
-          helperText={passwordField.error}
-          onChange={handlePasswordChange}
-          error={passwordHasError}
-          type='password'
-          disabled={loading}
-        />
+        <Grid container direction='column'>
+          <TextField
+            sx={fieldWidth}
+            label='Email'
+            placeholder='Email'
+            value={emailField.value}
+            helperText={emailField.error}
+            onChange={handleEmailChange}
+            error={emailHasError}
+            disabled={loading}
+          />
+          <TextField
+            sx={fieldWidth}
+            label='Password'
+            placeholder='Password'
+            value={passwordField.value}
+            helperText={passwordField.error}
+            onChange={handlePasswordChange}
+            error={passwordHasError}
+            type='password'
+            disabled={loading}
+          />
+        </Grid>
       </CardContent>
       <CardActions sx={{ padding: 2 }}>
         <LoadingButton

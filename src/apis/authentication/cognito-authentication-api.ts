@@ -15,7 +15,7 @@ export class CognitoAuthenticationApi implements AuthenticationApi {
           resolve({ success: true, userSession });
         },
         onFailure: (err: Error) => {
-          reject({ success: false, reason: err.message });
+          resolve({ success: false, reason: err.message });
         },
         newPasswordRequired: () => {
           reject({ success: false, reason: 'New password required, contact Joe' });
