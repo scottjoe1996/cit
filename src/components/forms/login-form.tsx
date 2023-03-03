@@ -26,7 +26,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({ submitLogin }) => 
 
   const handleSubmit = React.useCallback((email: string, password: string) => {
     setLoading(true);
-    void submitLogin(email, password);
+    void submitLogin(email, password).then(() => setLoading(false));
   }, []);
 
   const emailHasError = hasError(emailField.error);
